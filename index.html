@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Gera - Gifs</title>
+<meta name="theme-color" content="#ffffff">
+<meta property="og:title" content="Gera - Gifs">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MNVPMNEK0D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MNVPMNEK0D');
+</script>
+
+<!-- Meta Pixel -->
+<script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1949367109048901');
+  fbq('track', 'PageView');
+</script>
+
+<style>
+  :root{
+    --theme:#030712; --content:#6b7280; --title:#030712; --bg:#ffffff;
+    --opt-bg:#ffffff; --opt-border:#dbdbdb; --opt-border-hover:#030712;
+    --opt-bg-active:#030712; --opt-text:#030712; --opt-text-active:#ffffff;
+    --radius:16px; --el:56px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg)}
+  body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--title);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:28rem;margin:0 auto;padding:12px;min-height:95svh;display:flex;flex-direction:column;justify-content:space-between;gap:16px}
+  @media(min-width:768px){.wrap{padding:20px;gap:24px}}
+  header{position:relative;display:flex;align-items:center;justify-content:center;padding-top:12px}
+  .back{position:fixed;left:20px;top:18px;background:none;border:0;cursor:pointer;color:var(--title);font-size:14px;display:none}
+  .back.show{display:block}
+  .bar{width:100%;height:4px;border-radius:99px;background:#e5e7eb;overflow:hidden}
+  .bar>i{display:block;height:100%;background:var(--theme);border-radius:99px;transition:width .4s ease}
+  main{flex:1;display:flex;flex-direction:column;justify-content:center}
+  .step{display:none;flex-direction:column;gap:16px;animation:fade .45s ease}
+  .step.active{display:flex}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .txt{text-align:center;color:var(--content);font-size:16px;line-height:1.5}
+  .txt h1{font-size:32px;line-height:1.1;font-weight:700;color:var(--title);margin-bottom:8px}
+  .txt h2{font-size:24px;line-height:1.2;font-weight:700;color:var(--title);margin:4px 0}
+  .txt p{min-height:1em}
+  .opts{display:grid;gap:12px}
+  .opt{display:flex;align-items:stretch;min-height:66px;width:100%;text-align:left;cursor:pointer;background:var(--opt-bg);border:1px solid var(--opt-border);border-radius:var(--radius);color:var(--opt-text);font:inherit;font-size:16px;line-height:1.25;transition:all .2s ease;overflow:hidden}
+  .opt:hover{border-color:var(--opt-border-hover)}
+  .opt.active{background:var(--opt-bg-active);border-color:var(--opt-bg-active);color:var(--opt-text-active)}
+  .opt .emo{width:3.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .opt .emo img{width:30px;height:30px}
+  .opt .body{flex:1;display:flex;align-items:center;gap:12px;padding:12px 12px 12px 0}
+  .opt .radio{width:20px;height:20px;border:1px solid var(--opt-border);border-radius:50%;flex-shrink:0;transition:all .2s}
+  .opt:hover .radio{border-color:var(--opt-border-hover)}
+  .opt.active .radio{border-color:#fff;background:#fff;box-shadow:inset 0 0 0 4px var(--opt-bg-active)}
+  .btn{display:flex;align-items:center;justify-content:center;width:100%;height:var(--el);border:0;border-radius:var(--radius);background:var(--theme);color:#fff;font:inherit;font-size:16px;font-weight:500;cursor:pointer;text-decoration:none;transition:opacity .2s}
+  .btn:hover{opacity:.9}
+  .btn[disabled]{opacity:.75;cursor:not-allowed}
+  .img{width:100%;border-radius:var(--radius);display:block}
+  .loading{display:grid;gap:8px}
+  .loading .top{display:flex;justify-content:space-between;font-size:16px;font-weight:600;color:var(--title)}
+  .loading .track{height:8px;border-radius:99px;background:#e5e7eb;overflow:hidden}
+  .loading .track i{display:block;height:100%;width:0;background:var(--theme);border-radius:99px}
+  footer{text-align:center;font-size:10px;color:#9ca3af;padding:12px 0}
+</style>
+</head>
+<body>
+
+<button class="back" id="back" aria-label="Voltar">
+  <svg width="14" height="14" viewBox="0 0 448 512" fill="currentColor"><path d="M7 239c-9.4 9.4-9.4 24.6 0 33.9L175 441c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9L81.9 280H424c13.3 0 24-10.7 24-24s-10.7-24-24-24H81.9L209 105c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0L7 239z"/></svg>
+</button>
+
+<div class="wrap">
+  <header><div class="bar"><i id="progress"></i></div></header>
+
+  <main>
+
+    <!-- ETAPA 1 -->
+    <section class="step">
+      <div class="txt">
+        <h1>Você sabe exatamente como executar cada exercício que faz?</h1>
+        <p>Responda 3 perguntas e veja como o Professor Geraldo pode te ajudar a treinar com execução perfeita</p>
+      </div>
+      <button class="btn" data-next>Quero descobrir</button>
+    </section>
+
+    <!-- ETAPA 2 -->
+    <section class="step">
+      <div class="txt"><h1>Qual dessas situações mais te representa hoje?</h1></div>
+      <div class="opts">
+        <button class="opt" data-emoji="🏋️">Treino mas tenho dúvida se estou fazendo os exercícios certo</button>
+        <button class="opt" data-emoji="😨">Já me machuquei ou tenho medo de me machucar treinando</button>
+        <button class="opt" data-emoji="⚠️">Faço sempre os mesmos exercícios porque não sei variar</button>
+        <button class="opt" data-emoji="💸">Quero treinar certo mas não consigo pagar personal</button>
+      </div>
+      <button class="btn" data-next data-required>Continuar</button>
+    </section>
+
+    <!-- ETAPA 3 -->
+    <section class="step">
+      <div class="txt">
+        <h1>Qual é o seu objetivo principal agora?</h1>
+        <p>Qual tipo de treino você prefere?</p>
+      </div>
+      <div class="opts">
+        <button class="opt" data-emoji="🔥">Emagrecer e definir o corpo</button>
+        <button class="opt" data-emoji="💪">Ganhar massa muscular</button>
+        <button class="opt" data-emoji="🌟">Melhorar condicionamento e disposição</button>
+        <button class="opt" data-emoji="✅">Começar do zero do jeito certo</button>
+      </div>
+      <button class="btn" data-next data-required>Continuar</button>
+    </section>
+
+    <!-- ETAPA 4 -->
+    <section class="step">
+      <div class="txt"><h1>Onde você treina?</h1></div>
+      <div class="opts">
+        <button class="opt" data-emoji="🏋️">Academia</button>
+        <button class="opt" data-emoji="🏠">Em casa</button>
+        <button class="opt" data-emoji="🔄">Nos dois</button>
+        <button class="opt" data-emoji="🏃">Faço corrida ou Calistenia</button>
+      </div>
+      <button class="btn" data-next data-required>Continuar</button>
+    </section>
+
+    <!-- ETAPA 5 - Loading (5 segundos) -->
+    <section class="step" data-loading="5">
+      <div class="txt"><h1>Analisando seu perfil...</h1></div>
+      <div class="loading">
+        <div class="top"><span>Carregando...</span><span class="pct">0%</span></div>
+        <div class="track"><i></i></div>
+      </div>
+    </section>
+
+    <!-- ETAPA 6 -->
+    <section class="step">
+      <div class="txt">
+        <p>Temos a solução ideal para você:</p>
+        <h2><strong style="color:#09090b">O Professor Geraldo reuniu mais de 1.000 exercícios demonstrados em GIF pra você ter a execução perfeita na palma da mão. </strong></h2>
+        <p><span style="color:#09090b">Academia, funcional, calistenia, crossfit e mobilidade.</span></p>
+      </div>
+      <img class="img" src="https://media.inlead.cloud/uploads/47852/2026-05-25/9A3Ez-design-sem-nome-71.webp" width="848" height="1264" alt="">
+      <button class="btn" data-next>Ver como funciona</button>
+    </section>
+
+    <!-- ETAPA 7 -->
+    <section class="step">
+      <img class="img" src="https://media.inlead.cloud/uploads/47852/2026-05-25/9A3Ez-design-sem-nome-71.webp" width="848" height="1264" alt="">
+      <div class="txt">
+        <p>Tem no App Gifs de:</p>
+        <p><span style="color:#09090b">Abdominal, Antebraços, Bíceps, Calistenia, Cardio Academia, Costas, Crossfit, Eretores da espinha, Funcional, Glúteos, Mobilidade e Alongamento, Ombros, Panturrilhas, Peitoral, Pernas, Trapézio, Tríceps e sempre com novas atualizações</span></p>
+      </div>
+      <button class="btn" data-next>Continuar</button>
+    </section>
+
+    <!-- ETAPA 8 - Vídeo VTurb + checkout -->
+    <section class="step">
+      <div class="txt"><p><strong style="color:#09090b">Veja na prática:</strong></p></div>
+      <div id="ifr_6a1455d474cf0862fbb06044_wrapper" style="margin:0 auto;width:100%;max-width:400px;">
+        <div style="position:relative;padding:177.77777777777777% 0 0 0;" id="ifr_6a1455d474cf0862fbb06044_aspect">
+          <iframe frameborder="0" allowfullscreen src="about:blank" id="ifr_6a1455d474cf0862fbb06044" style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:var(--radius)" referrerpolicy="origin"></iframe>
+        </div>
+      </div>
+      <a class="btn" id="checkout" href="https://geraldo.destravadigital.com/gerafitpro/">Eu quero treinar melhor!</a>
+    </section>
+
+  </main>
+
+  <footer>© 2026</footer>
+</div>
+
+<script>
+  // Emojis estilo Apple (igual ao original)
+  function emojiUrl(e){
+    const cps=[...e].map(c=>c.codePointAt(0).toString(16)).filter(c=>c!=='fe0f');
+    return 'https://cdn.jsdelivr.net/npm/emoji-datasource-apple@15.1.2/img/apple/64/'+cps.join('-')+'.png';
+  }
+  document.querySelectorAll('.opt').forEach(o=>{
+    const label=o.innerHTML, e=o.dataset.emoji;
+    const img=document.createElement('img'); img.alt=e; img.src=emojiUrl(e);
+    img.onerror=()=>{ img.onerror=null; img.src=emojiUrl(e+'️').replace('.png','-fe0f.png'); };
+    o.innerHTML='<div class="emo"></div><div class="body"><div class="radio"></div><div>'+label+'</div></div>';
+    o.querySelector('.emo').appendChild(img);
+  });
+
+  // Passa os parâmetros da URL (UTMs) para o checkout
+  const co=document.getElementById('checkout');
+  if(location.search){ co.href+= (co.href.includes('?')?'&':'?')+location.search.slice(1); }
+
+  const steps=[...document.querySelectorAll('.step')];
+  const bar=document.getElementById('progress'), back=document.getElementById('back');
+  let cur=0, history=[];
+
+  function show(i){
+    steps[cur].classList.remove('active');
+    cur=i; const s=steps[cur]; s.classList.add('active');
+    bar.style.width=((cur+1)/steps.length*100)+'%';
+    back.classList.toggle('show',cur>0);
+    window.scrollTo(0,0);
+    if(s.dataset.loading) runLoading(s,+s.dataset.loading);
+    if(s.querySelector('iframe#ifr_6a1455d474cf0862fbb06044')) loadVideo();
+  }
+  function next(){ if(cur<steps.length-1){ history.push(cur); show(cur+1); } }
+  back.onclick=()=>{ if(history.length){ let p=history.pop(); while(steps[p].dataset.loading && history.length) p=history.pop(); show(p); } };
+
+  steps.forEach(s=>{
+    const btn=s.querySelector('[data-next]');
+    if(btn){
+      if(btn.hasAttribute('data-required')) btn.disabled=true;
+      btn.onclick=next;
+    }
+    s.querySelectorAll('.opt').forEach(o=>o.onclick=()=>{
+      s.querySelectorAll('.opt').forEach(x=>x.classList.remove('active'));
+      o.classList.add('active'); if(btn) btn.disabled=false;
+      setTimeout(next,350);
+    });
+  });
+
+  function runLoading(s,secs){
+    const pct=s.querySelector('.pct'), fill=s.querySelector('.track i'), t0=Date.now();
+    const iv=setInterval(()=>{
+      if(steps[cur]!==s) return clearInterval(iv);
+      const p=Math.min(1,(Date.now()-t0)/(secs*1000));
+      pct.textContent=Math.round(p*100)+'%'; fill.style.width=(p*100)+'%';
+      if(p>=1){ clearInterval(iv); setTimeout(next,200); }
+    },50);
+  }
+
+  let videoLoaded=false;
+  function loadVideo(){
+    if(videoLoaded) return; videoLoaded=true;
+    const sc=document.createElement('script');
+    sc.src='https://scripts.converteai.net/lib/js/smartplayer-wc/v4/sdk.js'; sc.async=true;
+    document.head.appendChild(sc);
+    document.getElementById('ifr_6a1455d474cf0862fbb06044').src=
+      'https://scripts.converteai.net/62ce1286-8eb0-4017-9456-b80ee0bf38ce/players/6a1455d474cf0862fbb06044/v4/embed.html'
+      +(location.search||'?')+'&vl='+encodeURIComponent(location.href);
+  }
+
+  show(0);
+</script>
+</body>
+</html>
